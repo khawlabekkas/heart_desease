@@ -1,0 +1,38 @@
+body {
+    background: linear-gradient(135deg, #232526 0%, #414345 100%);
+    color: #e0e0e0;
+    font-family: 'Segoe UI', 'Roboto', 'Arial', sans-serif;
+}
+.hero-section {
+    padding: 5rem 0;
+    text-align: center;
+    background: linear-gradient(90deg, #0f2027, #2c5364);
+    color: #fff;
+    border-radius: 1rem;
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+    animation: fadeIn 1.5s ease;
+}
+@keyframes fadeIn {
+    0% { opacity: 0; transform: translateY(30px); }
+    100% { opacity: 1; transform: translateY(0); }
+}
+.card {
+    background: rgba(44, 62, 80, 0.85);
+    border-radius: 1rem;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+.card:hover {
+    transform: scale(1.03);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+}
+.btn-gradient {
+    background: linear-gradient(90deg, #ff512f, #dd2476);
+    color: #fff;
+    border: none;
+    border-radius: 2rem;
+    transition: background 0.3s;
+}
+.btn-gradient:hover {
+    background: linear-gradient(90deg, #dd2476, #ff512f);
+}

@@ -1,0 +1,144 @@
+{% extends 'base.html' %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/styles.css' %}">
+<script src="{% static 'js/theme.js' %}"></script>
+{% block title %}Heart Disease Prediction{% endblock %}
+{% block content %}
+<div class="container d-flex justify-content-center align-items-center min-vh-100" style="background: #fff;">
+    <div class="card shadow-lg p-4" style="max-width: 420px; width: 100%; border-radius: 1.5rem; backdrop-filter: blur(6px); background: #FDC6C6;">
+        <div class="text-center mb-4">
+            <span class="fs-2" style="color: #FF9AA2;">
+                <i class="bi bi-heart-pulse"></i>
+            </span>
+            <h2 class="fw-bold mb-1" style="color: #FFB07C;">Heart Disease Prediction</h2>
+            <p class="text-muted" style="color: #FF9AA2;">Enter patient details below</p>
+        </div>
+        <form method="post" enctype="multipart/form-data" novalidate>
+            {% csrf_token %}
+            <div class="mb-3">
+                <label class="form-label" style="color: #FFB07C;">Age</label>
+                <input type="number" name="age" class="form-control" placeholder="Enter age" required>
+            </div>
+            <div class="mb-3">
+                <label class="form-label" style="color: #FFB07C;">Sex</label>
+                <select name="sex" class="form-select" required>
+                    <option value="">Select sex</option>
+                    <option value="1">Male</option>
+                    <option value="0">Female</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label class="form-label" style="color: #FFB07C;">Chest Pain Type</label>
+                <select name="cp" class="form-select" required>
+                    <option value="">Select type</option>
+                    <option value="0">Type 0</option>
+                    <option value="1">Type 1</option>
+                    <option value="2">Type 2</option>
+                    <option value="3">Type 3</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label class="form-label" style="color: #FFB07C;">Resting Blood Pressure</label>
+                <input type="number" name="trestbps" class="form-control" placeholder="Resting BP (mm Hg)" required>
+            </div>
+            <div class="mb-3">
+                <label class="form-label" style="color: #FFB07C;">Cholesterol</label>
+                <input type="number" name="chol" class="form-control" placeholder="Cholesterol (mg/dL)" required>
+            </div>
+            <div class="mb-3">
+                <label class="form-label" style="color: #FFB07C;">Fasting Blood Sugar > 120 mg/dl</label>
+                <select name="fbs" class="form-select" required>
+                    <option value="">Select</option>
+                    <option value="1">True</option>
+                    <option value="0">False</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label class="form-label" style="color: #FFB07C;">Resting ECG</label>
+                <select name="restecg" class="form-select" required>
+                    <option value="">Select</option>
+                    <option value="0">Normal</option>
+                    <option value="1">Abnormal</option>
+                    <option value="2">Hypertrophy</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label class="form-label" style="color: #FFB07C;">Max Heart Rate</label>
+                <input type="number" name="thalach" class="form-control" placeholder="Max Heart Rate" required>
+            </div>
+            <div class="mb-3">
+                <label class="form-label" style="color: #FFB07C;">Exercise Induced Angina</label>
+                <select name="exang" class="form-select" required>
+                    <option value="">Select</option>
+                    <option value="1">Yes</option>
+                    <option value="0">No</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label class="form-label" style="color: #FFB07C;">ST Depression</label>
+                <input type="number" step="any" name="oldpeak" class="form-control" placeholder="ST Depression" required>
+            </div>
+            <div class="mb-3">
+                <label class="form-label" style="color: #FFB07C;">Slope of Peak</label>
+                <select name="slope" class="form-select" required>
+                    <option value="">Select</option>
+                    <option value="0">Upsloping</option>
+                    <option value="1">Flat</option>
+                    <option value="2">Downsloping</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label class="form-label" style="color: #FFB07C;">Number of Major Vessels</label>
+                <input type="number" name="ca" class="form-control" min="0" max="4" placeholder="0-4" required>
+            </div>
+            <div class="mb-3">
+                <label class="form-label" style="color: #FFB07C;">Thalassemia</label>
+                <select name="thal" class="form-select" required>
+                    <option value="">Select</option>
+                    <option value="1">Normal</option>
+                    <option value="2">Fixed Defect</option>
+                    <option value="3">Reversible Defect</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label class="form-label" style="color: #FFB07C;">Upload CSV (optional)</label>
+                <input type="file" name="csv_file" class="form-control" accept=".csv">
+            </div>
+            <button type="submit" class="btn w-100 fw-bold" style="background: linear-gradient(90deg, #FFB07C, #FF9AA2); color: #fff; border-radius: 2rem; box-shadow: 0 2px 12px rgba(255,154,162,0.15); transition: background 0.3s;">
+                <i class="bi bi-robot"></i> Predict
+            </button>
+        </form>
+    </div>
+</div>
+{% if predictions %}
+<div class="container mt-4">
+    <div class="card shadow-lg" style="border-radius: 1.5rem; background: #FFB07C;">
+        <div class="card-body">
+            <h4 class="mb-3" style="color: #FF9AA2;"><i class="bi bi-bar-chart"></i> Prediction Results</h4>
+            <table class="table table-hover table-bordered" style="background: #fff; border-radius: 1rem;">
+                <thead>
+                    <tr>
+                        {% for col in columns %}<th>{{ col }}</th>{% endfor %}
+                        <th>Prediction</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for row in predictions %}
+                    <tr>
+                        {% for val in row|slice:":-1" %}<td>{{ val }}</td>{% endfor %}
+                        <td>
+                            {% if row|last == 1 %}
+                                <span class="badge bg-danger">Yes</span>
+                            {% else %}
+                                <span class="badge bg-success">No</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endif %}
+{% endblock %}
